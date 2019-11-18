@@ -1,6 +1,6 @@
 # task - https://stepik.org/lesson/238819/step/2?unit=211271
 
-from base_page import BasePage
+from .base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
