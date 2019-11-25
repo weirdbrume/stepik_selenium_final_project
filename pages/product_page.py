@@ -20,8 +20,6 @@ class ProductPage(BasePage):
         return product_name, product_price
 
     def should_message_product_in_basket_equal_to_the_product_name(self):
-        print(self._product_alerts()[0])
-        print(self._product_name_and_price()[0])
         assert self._product_name_and_price()[0] in self._product_alerts()[0],\
             f'name of product "{self._product_name_and_price()[0]}" are not equal to the product name in alert'
 
