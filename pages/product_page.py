@@ -1,5 +1,6 @@
 from .base_page import BasePage
 from .locators import ProductPageLocators
+from collections import namedtuple
 
 
 class ProductPage(BasePage):
@@ -9,20 +10,19 @@ class ProductPage(BasePage):
 
     def _product_alerts(self):
         alerts = self.browser.find_elements(*ProductPageLocators.ALERTS_LOCATOR)
-        product_name_message = alerts[0].text
-        product_price_message = alerts[2].text
-        return product_name_message, product_price_message
+        product = namedtuple('product', 'name, price')
+        return product(alerts[0].text, alerts[2].text)
 
     def _product_name_and_price(self):
         product_locator = self.browser.find_element(*ProductPageLocators.PRODUCT_LOCATOR)
         product_text = product_locator.text.split('\n')
-        product_name, product_price = product_text[0], product_text[1]
-        return product_name, product_price
+        product = namedtuple('product', 'name, price')
+        return product(product_text[0], product_text[1])
 
     def should_message_product_in_basket_equal_to_the_product_name(self):
-        assert self._product_name_and_price()[0] in self._product_alerts()[0],\
-            f'name of product "{self._product_name_and_price()[0]}" are not equal to the product name in alert'
+        assert self._product_name_and_price().name in self._product_alerts().name,\
+            f'name of product "{self._product_name_and_price().name}" are not equal to the product name in alert'
 
     def should_message_price_of_product_in_basket_equal_to_product_price(self):
-        assert self._product_name_and_price()[1] in self._product_alerts()[1],\
-            f'product price "{self._product_name_and_price()[0]}" are not equal to the product price in alert'
+        assert self._product_name_and_price().price in self._product_alerts().price,\
+            f'product price "{self._product_name_and_price().price}" are not equal to the product price in alert'
